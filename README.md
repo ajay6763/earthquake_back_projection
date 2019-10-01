@@ -27,4 +27,4 @@
 
 >8. For removing the high-frequency artefacts in the stackedwaveform at each potential source grid, a 10 s moving averagetime window is applied. In order to test the influence of the movingaverage time window on the final result, we performed our analysisfor 5, 10, 15 and 20 s time windows. It was observed that the 10 swindow is optimal in removing unwanted high-frequency artefacts,while preserving the necessary details of the source time function(STF).
 
-> # For details see Kumar et al., 2017 (doi: 10.1093/gji/ggw438)
+
