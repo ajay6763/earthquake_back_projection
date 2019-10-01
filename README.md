@@ -1,6 +1,6 @@
 
 > # earthquake_back_projection
-> Back-projection of high-frequency radiation from earthquake source using multiple arrays. Methodology is based on Ishii (2012). For details see Kumar et al., 2017 (doi: 10.1093/gji/ggw438)
+> Back-projection of high-frequency radiation from earthquake source using multiple arrays. Methodology is based on Ishii (2012). For details see Kumar et al., 2017 [doi: 10.1093/gji/ggw438]
 > #### dependency 
 > * Matlab
 > * GMT4
