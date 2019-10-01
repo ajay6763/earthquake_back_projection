@@ -1,0 +1,43 @@
+0.6.0 revision series names
+-----------------------------
+???-111  --  Ararat
+112-119  --  Annapurna
+120-129  --  Blackburn
+130-139  --  Chimborazo
+140-149  --  Dhaulagiri
+150-159  --  Everest
+160-169  --  Fuji
+170-179  --  Gunnbjornfjeld
+180-189  --  Haleakala
+190-199  --  Ichinsky
+200-209  --  Jayawijaya
+210-219  --  Kangchenjunga
+220-229  --  Lhotse
+230-239  --  Makalu
+240-299  --  Noshaq
+300-399  --  Otgontenger
+400-499  --  Pumori/PassuSar/PizPalü
+500-599  --  Rheinwaldhorn/Rakaposhi/Rakhiot
+600-699  --  Shishapangma/Shivling/Saraghrar
+700-799  --  TirichMir/Tsambagarav/Tambora
+800-899  --  Ultar/Untersberg/Ulysses/Uncompahgre/Undundi-Wandandi
+900-999  --  Vinson/Vitosha/Vesuvius/Vancouver/Venado
+
+0.7.0
+------------
+single internal format
+	- removes undefined being specific
+	- cleans up code quite a bit
+	- simplifies code quite a bit
+find other data filetypes
+	- miniseed
+	- segy
+	- sac ascii
+	- ah
+	- css
+	- reflect
+	- gse
+figure out how to read/write other filetypes
+convert to css
+import/export css
+

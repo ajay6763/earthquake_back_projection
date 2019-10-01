@@ -1,0 +1,1 @@
+awk 'NR==FNR{a[NR]=$2" " $1; next} {print a[FNR], $3" " $4 " " $5" " $6 " " $7" " $8 " " $9" " $10 " " $11" " $12 " " $13" " $14 " " "1" " " $16}'  all_array_master_list.txt  2016104135517.BREQfast >./temp

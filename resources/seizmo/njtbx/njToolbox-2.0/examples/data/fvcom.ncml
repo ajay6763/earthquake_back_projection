@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+    location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/Data/UCF_FVCOM_DEMO.nc">
+    <variable name="zeta">
+        <attribute name="coordinates" value="time lat lon"/>
+        <attribute name="grid" value="grid1"/>
+    </variable>
+    <variable name="grid1">
+        <remove type="attribute" name="index_start"/>
+        <attribute name="index_origin" type="short" value="1"/>
+    </variable>
+    <variable name="u">
+        <attribute name="coordinates" value="time siglay latc lonc"/>
+        <attribute name="grid" value="grid5"/>
+    </variable>
+    <variable name="v">
+        <attribute name="coordinates" value="time siglay latc lonc"/>
+        <attribute name="grid" value="grid5"/>
+    </variable>
+    <variable name="grid5">
+        <remove type="attribute" name="index_start"/>
+        <attribute name="index_origin" type="short" value="1"/>
+    </variable>
+    <variable name="time">
+        <attribute name="units" value="days since 2008-01-01 00:00:00"/>
+    </variable>
+    <attribute name="Conventions" value="CF-1.4"/>
+</netcdf>

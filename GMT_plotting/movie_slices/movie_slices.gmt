@@ -1,0 +1,177 @@
+#!/bin/bash
+#
+# script name:  
+# Setting the station file
+####################################################################################################################################################################
+# Input files reading
+for i in `seq 1 1 90`
+do
+#peak_energy=peak_energy_0.2_3Hz.txt
+infile=time_slice_$i.txt 
+stf=stf_0.2_5Hz_last_try.txt
+cptfile=energy.cpt #codaq_sikkim.cpt #ETA.cpt #NE_1.cpt # codaq_sikkim.cpt
+eventfile=dmg_event.txt
+focmechfile=2015_Nepal_eq_Focal_Mech_with_DMG_location.txt
+#fr=`echo $peak_energy|awk -Fpeak_energy_ '{print $2}'|awk -F.txt '{print $1}'`;
+fr=0.2_5Hz;
+out=$i'_'$fr 
+#f_low=`echo $peak_energy|awk -Fpeak_energy_ '{print $2}'| awk -F.txt '{print $1}'|awk -F_ '{print $1}'`
+f_low=0.2;
+#f_up=`echo $peak_energy|awk -Fpeak_energy_ '{print $2}'| awk -F.txt '{print $1}'|awk -F_ '{print $2}'`
+f_up=5Hz;
+####################################################################################################################################################################
+# cleaning up to start
+rm -f temp-event_list.txt # temp-sta_list.txt
+# overriding gmt defaults for paper media ####################
+gmtset BASEMAP_TYPE plain 
+#### plotting a map and both the dispersion curves using gmt#########
+gmtset ANOT_FONT 5
+gmtset LABEL_FONT 5
+gmtset LABEL_FONT_SIZE 15p
+gmtset ANOT_FONT_SIZE 15p
+gmtset FRAME_PEN 1p
+gmtset PAGE_ORIENTATION landscape
+
+##### making the map ######################
+# Mercator projecton
+proj="-JM25"
+#bounds="-R83.5/87.5/26/28.7"
+bounds="-R84/87/27/28.8"
+
+miscB="-Ba0.5f0.2a0.5f0.2NesW"
+misc="-V"
+
+echo "output file is $out"
+
+####################################################################################################################################################################
+### Back projection plotting
+gridfile=/DATABACKUP/RESOURCES/GMT_RESOURCES/GRD_files_India/INDIA_cont.grd
+awk 'NR>1 {print $1, $2, $3}' $infile | xyz2grd -Genergy.grd $bounds -I0.1/0.1 
+grdsample energy.grd -Genergy1.grd -N1101/901 $bounds
+grdsample ${gridfile} -GIndia.grd -N1101/901 $bounds
+grdgradient India.grd -A270 -M -Nt -Gindia.int 
+grdimage energy1.grd -C${cptfile} -Iindia.int  $bounds $proj ${miscB}  -K ${misc} -Y3  > ${out}.ps
+pscoast $proj $bounds ${miscB} -W4 -A250  -O -K ${misc} >> ${out}.ps
+#psscale -D12c/-0.4c/12c/0.6ch  --ANNOT_FONT_SIZE=12p -C${cptfile}  -Ba0.1:Relative-Energy: -K -O >> ${out}.ps
+psscale -D20c/-0.5c/8c/.4ch  --ANNOT_FONT_SIZE=12p -C${cptfile}  -Ba0.1:Relative-Energy: -K -O >> ${out}.ps
+psscale -D5c/-0.5c/8c/.4ch --ANNOT_FONT_SIZE=12p -Cpeak.cpt  -Ba10:Time/s: -K -O >> ${out}.ps
+#psscale -D5c/-0.5c/8c/.4ch --ANNOT_FONT_SIZE=12p -Cpeak.cpt  -Ba10:Time/s: -K -O >> ${out}.ps
+####################################################################################################################################################################
+# Plotting the digitised faults etc
+pensize=4
+digitpath=/DATABACKUP/RESOURCES/GMT_RESOURCES/Digitized_Values/Nepal_values
+# MBT in Nepal 
+psxy $digitpath/MBT.txt -K -O -J -R -W${pensize}/0/0/0 -Sf0.8i/0.1iR -G0/0/0 >>  ${out}.ps
+# MCT in Nepal 
+psxy $digitpath/MCT.txt -K -O -J -R -W${pensize}/0/0/0 -Sf0.8i/0.1iR -G0/0/0 >>  ${out}.ps
+# MFT in Nepal
+psxy $digitpath/MFT.txt -K -O -J -R -W${pensize}/0/0/0 -Sf0.8i/0.1iR -G0 >>  ${out}.ps
+
+psxy decollement.txt    -K -O -J -R -W25/190/100/52  -Sf10il -G0 >>  ${out}.ps
+
+
+#naming the Stations
+#tail -n +2 $station_file | awk '{if ($3=="IT") print $5-0.02, $4, "12 0 5 BR", $2}' | pstext -R -K -O $proj -G0/0/0 ${misc} >> ${out}.ps
+####################################################################################################################################################################
+## decoration
+## Map title
+psxy -K -O -JM -R -W3/0/0/0 -Gfloralwhite -M << EOF >> ${out}.ps
+85.0 28.5
+85.0 28.75
+86.0 28.75
+86.0 28.5
+EOF
+pstext -R -J -D-0/0 -G0/0/0 -O  -K << stopit >> $out.ps
+85.5 28.7 16 0 4 CM `echo Back Projection $f_low - $f_up`
+85.5 28.6 16 0 4 CM `echo Time = $i seconds`
+stopit
+## Faults name 
+pstext -R -J -D-0/0 -G0/0/0  -W${pensize}/0/0/0 -O -K << stopit >> $out.ps
+84.22	27.25 16 0 4 CM `echo MFT`
+84.22	27.65 16 0 4 CM `echo MBT`
+84.22	28.32 16 0 4 CM `echo MCT`
+84.22	28.08 16 0 4 CM `echo Locking Line`
+
+stopit
+##contouring
+#grdcontour energy.grd -R -JM -C0.1 -O -A0.1  -L0.5/1 -K -Wa1/0/0/0ta -Wa0.5/0/0/0ta ${misc} >> ${out}.ps 
+####################################################################################################################################################################
+## Ploting Seismicity 
+psxy -O -K $proj -R -Sa -Gwhite -W1p,black ${misc} << EOF >> ${out}.ps
+`cat $eventfile | awk 'NR>1&&!/^#/&&$11<4&&$11>=3{print $9, $8, 0.1}'`
+EOF
+psxy -O -K $proj -R -Sc -Gblack -W1p,black ${misc} << EOF >> ${out}.ps
+`cat $eventfile | awk 'NR>1&&!/^#/&&$11<5&&$11>=4{print $9, $8, 0.1}'`
+EOF
+psxy -O -K $proj -R -Sc -Gblack -W1p,black ${misc} << EOF >> ${out}.ps
+`cat $eventfile | awk 'NR>1&&!/^#/&&$11<6&&$11>=5{print $9, $8, 0.1}'`
+EOF
+psxy -O -K $proj -R -Sc -Gwhite -W1p,black ${misc} << EOF >> ${out}.ps
+`cat $eventfile | awk 'NR>1&&!/^#/&&$11<7&&$11>=6{print $9, $8, 0.4}'`
+EOF
+psxy -O -K $proj -R -Sa -Gwhite -W1p,black ${misc} << EOF >> ${out}.ps
+`cat $eventfile | awk 'NR>1&&!/^#/&&$11>=7{print $9, $8, 1.2}'`
+EOF
+
+
+#Location of Kathmandu
+psxy -O -K $proj -R -Ss0.8c -G140/140/140 -W1p,black ${misc} << EOF >> ${out}.ps
+85.334373 27.702045
+EOF
+
+# Focal mechanism of Mainshock and Aftershocks (MT5 and GFZ)
+# Mainshock and Aftershocks modeled using MT5
+#cat ${focmechfile} | awk '{if ($12 == "MT5") print $1, $2, $3, $4, $5, $6, $7/1.3, $8, $9, " "}' | psmeca $proj -R $miscB -CP0.1 -L -Sa1.5c/14 -G0/0/250 -V -H0 -O -K -P >> ${out}.ps
+# Aftershocks which could not be modeled using MT5 but has solution from GFZ
+#cat ${focmechfile} | awk '{if ($12 == "GFZ") print $1, $2, $3, $4, $5, $6, $7/1.5, $8, $9, " "}' | psmeca $proj -R $miscB -CP0.1 -L -Sa1.5c/14 -G0/0/0 -V -H0 -O -K -P >> ${out}.ps
+
+####################################################################################################################################################################
+## plotting peak amplitudes
+for j in `seq 1 1 $i`
+do
+#cat  $work_dir/data_list.txt|awk -v var=`cat i` '{ if ( $1 == var ) print 2*($4-$2) }'>>t
+infile_t=time_slice_$j.txt 
+sort -k3 $infile_t|tail -n +2502 |awk -v time=$j '{ print $1, $2, time, $3/2}'|psxy -R -K -O $proj -Sc -Cpeak.cpt  -W5/0/0/0 ${miscB} >> ${out}.ps
+done
+sort -k3 $infile|tail -n +2502 |awk -v time=$i '{ print $1, $2, time, $3}'|psxy -R -K -O $proj -Sc -Cpeak.cpt  -W5/0/0/0 ${miscB} >> ${out}.ps
+
+#cat  $peak_energy|awk '{ print $2, $3, $1, $4*10}'|psxy -R -K -O $proj -Sc  -Cpeak.cpt -W5/0/0/0 ${misc} >> ${out}.ps
+#Legend for the symbols used
+pslegend -R -JM -Gfloralwhite -D84.05/28.45/3.15c/3c/BL -C0.1c/0.1c -L1.8 -F -K -O --ANNOT_FONT_SIZE=10p << EOF >> ${out}.ps
+S 0.1i a 0.80 255/255/255 0.7p 0.3i  Mag 7+
+S 0.1i c 0.55 255/255/255 0.7p 0.3i  Mag 6-7
+S 0.1i c 0.23 0/0/0 0.7p 0.3i Aftershocks 
+#S 0.1i c 0.40 0/0/255 0.7p 0.3i Data not usable
+S 0.1i s 0.4c 130/130/130 0.7p 0.3i Kathmandu      
+EOF
+
+####################################################################################################################################################################
+## plotting STF 
+gmtset LABEL_FONT_SIZE 10p
+gmtset ANOT_FONT_SIZE 10p
+gmtset FRAME_PEN 0.5p
+psbasemap -JX4.5/4 -R0/90/0/1 -V  -X20 -Y12.5 -O -K  -Gfloralwhite >> ${out}.ps
+psxy $stf  -J -R -Ba100f100a1f0.2a20f10newS -Sc0.1 -V -G0 -O -K >> ${out}.ps
+
+psxy  -J -R -W2p/255/0/0 -O  -K <<END >> ${out}.ps
+$i -10
+$i 380
+END
+
+# end of plot
+
+psxy ${proj} ${bounds} -O < /dev/null >> ${out}.ps
+
+# plotting the map
+#gv ${out}.ps
+
+# removing gmt defaults
+rm -f ./.gmtdefaults4 ./.gmtcommands4
+
+###################################################################
+
+#cleaning up 
+rm -f INDIA_temp.grd sta_list.txt event_list.txt ray_covg.txt temp-sta_list.txt temp-event_list.txt
+done
+# end
+

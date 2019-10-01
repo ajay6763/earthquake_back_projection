@@ -1,0 +1,284 @@
+my todo list
+%%%%%%%%%%%%
+
+way to make movies while you do other things on the screen:
+## hf = figure(‘visible’, ‘off’)
+## addframe(aviobj, hf)
+
+octave_364_fixes in install_seizmo & startup
+mp_tmerc goes from m_map_fixes to m_map_fixes/private in webinstall_mmap
+figure out best way to use scatter in octave
+ - no symbol spec on scatter call then set them afterwards
+how about installing the latest octave stable branch instead
+
+taup Sn/Pn no refracted path bug
+taup strange extra P phases bug
+
+
+
+1. install_seizmo improvements
+    - extras
+        - iscfmdb
+          x parse_isc_fm
+          - clean_isc_fm
+            - no depth -> out
+            - no mag -> out
+            - fill in remaining fields
+          - update_isc_fm
+          - compat w/ findcmt findcmts plotmt mapcmts etc ?
+        - sacpz ws support
+        - add new mapping features?
+            - natural earth: http://www.naturalearthdata.com/downloads/
+            - gplates stuff
+         ok - utig plate boundaries: ftp://ftp.ig.utexas.edu/pub/LIPS/Data/plate_boundaries/
+         ok - seamounts: http://www.soest.hawaii.edu/PT/SMTS/main.html
+         ok - ml & fz: http://www.soest.hawaii.edu/PT/GSFML/
+         ok - seafloor age stuff: http://www.earthbyte.org/Research/Current/agegrid2008.html
+        - add new 3D models?
+            - sph harm mantle models
+                - really need codes to synthesize info at points
+                    - fjsimmons might have matlab codes along these lines
+            - ani mantle models
+                - just store the values as another field
+                - add an ani flag of some sort (should indicate type too)
+                - dependent functions need to handle flag logic and math
+            - add more models shared via iris emc
+    - any function that requires a jar does
+      a check first and tries to add it to
+      the dynamic path if not found
+        - ww3struct
+          - how to detect jar files are not in classpath?
+2. fss codes
+   fss fssxc fsshorz fsshorzxc
+    - nearest frequency option
+    - add in block extensions (fhwidth, ntiles)
+      - fhwidth broken due to slowness magnitude streaking
+        - caused by assuming f_center*s==k for all frequencies?
+    - add in range extensions
+    - test
+   tss tssxc tsshorz tsshorzxc
+    - match fss*
+   arf arfhorz
+    - add in range extensions
+    - test
+   isfss chkfss
+   fsssub fssidx fssgrids
+    - fsssub needs slowness ranging
+   fssavg fssbackproject fsscart2pol fsspol2cart
+    - pol/cart need range extensions, better defaults and use spline by default
+    - fssbackproject from fk/fs_whateveritiscalled
+   fsscorrcoef fssdbinfo
+   plotarf plotfss plotfssupdate
+    - plot option passthrough
+   fssframeslide fssfreqslide
+
+ - an arrays function (yellowknife/lasa)
+ - fssphasecorr should be arrayphasecorr
+ - horz capon formula
+   - invert component matrices and rotate
+   - invert each rotated matrix
+3. geofss codes (use mmap image option)
+ - rewrites
+   - geo(fssxc,tdssxc)
+     - antipodal issue?
+ - write
+   - geo(fsshorz,fsshorzxc,tdsshorzxc,arfhorz)
+     - much of this should come from non-geo versions
+4. test & tutorials for (geo)fss codes
+5. 2d inversion on a sphere
+    - cubed sphere
+        - book keeping for adjacent blocks
+        - read reference a few times to help understand their bookkeeping
+6. noise array phase and attenuation like in prieto 2009
+    - noise_stack_delaz
+    - stacking option
+      - z stat of coherency (freq domain)
+      - acl of coherency (freq domain)
+    - given dataset & freq plot real/imag coherency vs distance
+    - dist vs freq plot of real/imag coherency
+    - minimum misfit to observed real coherency
+        - searches through phase velocity
+        - searches through attenuation
+        - make a plot too
+    - Rayleigh greens function given phase velocity & attenuation vs freq
+7. test & tutorials for noise codes
+8. datasets for examples, walkthroughs
+9. expand centralized documentation with more examples & walkthroughs
+    - some intros to basic signal processing tasks, cmts, plotting
+    - walk-thrus of analysis codes
+A. tpw
+B. reflectivity
+C. rayleigh & love forward & inverse problem
+D. parallel version available using comment tags to allow switching
+   % __SEIZMO_PARALLEL__
+   % __SEIZMO_SERIAL__
+   functions
+
+cmt
+ - neu 2 enu (is this worthwhile?)
+ - plotmt: tpb, nodal line plotting
+ - plotmt3: coloring per mt
+ - mt_nodallines
+
+noise
+ - HARD: overlap option for stack stuff
+
+rotate
+    - through option
+    - rewrite option code
+
+figure out strange narrow long-period peaks in noise results
+    - window length does not affect it.
+    - response taper affects it?
+    - happens even without response removal?
+    - real signal?
+
+more cmb models (rjk)
+    - we need to allow parameter setting (while loop rather than for)
+        - cell of numbers  {depths/heights  velo%s}
+        - inputs will change per model or series ...
+        - can never really do everything here ... just go for basics
+
+rename to MOSS:
+    Matlab & Octave Seismology Scripts
+    (Easy, Natural, Mo, PASSCAL & OSS ties!)
+add screenshots for newer stuff
+	- better 2pw kernels
+	- cmts on maps, etc
+	- mantle maps & profiles
+	- other mapping features
+	- power spectra
+
+fix doc formatting
+    - examples
+    - description
+fix checkheader calls (and remove redundant checks)
+better versioninfo usage
+    - caching should be dropped in all but the lowest level cases
+    - seizmocheck should be used instead for the most part
+
+checking needs some tolerance (just too strict...)
+    - delta/b often differ by a neglegible amount
+        - but how do we handle the difference? fixdelta currently
+    - global access?
+
+slantstacking
+vespagrams
+writegmt
+historical quakes
+subduction zone contours/sheets
+
+improved plotting
+    - moving into the gui department would be nice for plotting only
+      some records (like for pages of 20 records), changing axes, etc
+    - header info on selection
+	- cmp vs cmp (plot 2 components with time)
+    - particle motion (color changing line to show time progression? how?)
+    - true gui buttons could make this really nice
+		- drop down(s) to select component (!!!)
+		- phase picking
+		- show predicted phase times
+		- so much more...
+
+3cmp support
+    - how do we indicate 3cmp? iftype?
+    - need functions to go from 1-cmp to 3-cmp and back
+    - what to do if not all 3 exist?
+    - this is great for rotations and particle motions
+	- force as ZNE
+	- how to handle gaps/overlaps
+	- how to handle non-synced breaks in components
+	- movies/plots of 3-d particle motion
+	- movies/plots of 2-d particle motion
+syncsample
+    - 2,3,4+ datasets
+    - this will be underneath rotate, meld
+
+standard instrument responses database
+    - this leads into inst resp checking
+      ie. this is a STS-2 but the response
+          is not as expected...
+better polezero docs
+	- units of poles and zeros
+		- sac radians
+	- what makes the constant
+		- (2*pi)^(np-nz)
+		- a0 (normalization constant - at wn the transfer function is 1 with a0)
+		- sensor gain (sensitivity - gives appropriate units) 
+		- digitizer gain (volts/bit - bit/volts)
+	- dis 2 vel
+		- add pole at 0 or remove zero at 0
+	- vel 2 dis
+		- add zero at 0
+	- SERIOUSLY FOLKS, why is there not a simple gui for this?
+
+ffmancor
+    - dynamic ray tracing is a must (see princeton group)
+	- stretch/squish gradually starting at some depth
+	- period sets up radial cos
+    - define azimuthal cos
+	- reflect off cmb
+    - can we make this something like 1e-6 s/km^3 ?
+
+picking
+    - better understanding of ppk in SAC
+    - mimic it as much as possible
+    - something like key2zoompan + plotX
+
+autopicking
+    - sta/lta style
+    - this is also useful for glitch detection
+
+glitch & step removal
+    - SAC has glitch detection ... implement it?
+
+drop/replace restrictive copyright functions
+	buttord2 (edit of buttord) - NEED!
+	ddendrogram (edit of dendrogram) - NEED FOR COLORING!
+
+markpeaks
+
+other filetype support:
+ segy (segy2MAT)
+ ah (coral)
+ miniseed support (this can be done since there is a fc entry)
+ sh (Thorne's codes)
+ seisan (gizmo)
+ antelope database (gizmo)
+
+OCTAVE SPECIFIC STUFF
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+- error & warning need sprintf support
+- octave-java package issues with Fedora:
+    yum install octave-devel
+    export JAVA_HOME=/opt/sun/jdk1.6****
+    cd $JAVA_HOME/jre/lib/amd64/
+    ln -s server client
+- no import function
+    - use javaObject & javaMethod
+- concatenation differs if cells & empties involved
+    - avoid multitype concatenation
+- box doesn't take ax (patch applied to devel branch)
+    - need patched version for 3.6.4
+    - 3.8.0 is okay here
+- 3.8.0 fails for: ... % blah
+- a(b(end)) fails if a not declared (fix applied to stable branch)
+- addpath works backwards
+- rmpath/unzip etc beat text to the prompt
+- unzip on existing unzipped contents will look stalled
+    - type y/n/A/N to get through it
+    - need to inform user of this ahead of time
+- no texlabel
+- no axescheck (use personal axparse function)
+- newplot doesn't have any io
+- wedge stalls octave 3.6.4
+- bihist makes fails in octave 3.6.4
+- legend can't change color for text/edge
+- no spectrogram in 3.6.4
+- no filter objects in 3.6.4
+- octave complains about m_maps many old short-circuit operators
+- mp_tmerc fails
+  - fix in m_map_fixes but must move it to m_map_fixes/private
+- linestyle symbols are different:
+  . + */h o x ^/> v/< s d p
+- scatter fails on just about any linespec entry in 3.6.4

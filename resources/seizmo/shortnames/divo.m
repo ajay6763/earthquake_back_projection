@@ -1,0 +1,1 @@
+../ftran/omegadivide.m

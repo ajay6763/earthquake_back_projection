@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--NcML to convert sample output from Matteo Previdi to UGRID spec-->
+
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+    location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/models/ugrid/zirino3_7Dyn.nc">
+        
+    <variable name="ubar" orgName="U">
+        <attribute name="coordinates" value="Time Asse_Y Asse_X"/>
+        <attribute name="grid" value="Mesh"/>
+        <attribute name="grid_location" value="node"/>
+    </variable>
+    <variable name="vbar" orgName="V">
+        <attribute name="coordinates" value="Time Asse_Y Asse_X"/>
+        <attribute name="grid" value="Mesh"/>
+        <attribute name="grid_location" value="node"/>
+    </variable>
+    <variable name="zeta" orgName="REL">
+        <attribute name="coordinates" value="Time Asse_Y Asse_X"/>
+        <attribute name="grid" value="Mesh"/>
+        <attribute name="grid_location" value="node"/>
+    </variable>
+    <variable name="Mesh" >
+        <attribute name="cell_type" value="tri_ccw"/>
+        <attribute name="index_origin" type="short" value="1"/>
+        <attribute name="coordinates_node" value="Asse_Y Asse_X"/>
+     </variable>
+    <variable name="Time" >
+        <attribute name="units" value="hours since 01-01-01 00:00:00 00:00"/>
+    </variable>
+    <attribute name="Conventions" value="CF-1.4"/>
+</netcdf>

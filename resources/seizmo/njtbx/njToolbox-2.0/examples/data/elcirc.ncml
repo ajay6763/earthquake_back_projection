@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
+  location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/~drf/RECENT/elcircfem.nc">
+
+  <variable name="ele">
+    <attribute name="index_origin" type="short" value="1"/>
+    <attribute name="cell_type" value="tri_ccw"/>
+    <attribute name="standard_name" value="connectivity_array"/>
+    <attribute name="coordinates_node" value="lat lon"/>
+  </variable>
+
+  <!-- add grids to the variables -->
+
+  <variable name="zeta">
+    <attribute name="coordinates" value="time lat lon"/>
+    <attribute name="grid" value="ele"/>
+    <attribute name="grid_location" value="node"/>
+  </variable>
+
+  <variable name="depth">
+    <attribute name="coordinates" value="lat lon"/>
+    <attribute name="grid" value="ele"/>
+    <attribute name="grid_location" value="node"/>
+      </variable>
+
+  <variable name="u">
+    <attribute name="coordinates" value="time sigma lat lon"/>
+    <attribute name="grid" value="ele"/>
+    <attribute name="grid_location" value="node"/>
+      </variable>
+
+  <variable name="v">
+    <attribute name="coordinates" value="time sigma lat lon"/>
+    <attribute name="grid" value="ele"/>
+    <attribute name="grid_location" value="node"/>
+
+  </variable>
+
+  <variable name="temp">
+    <attribute name="coordinates" value="time sigma lat lon"/>
+    <attribute name="grid" value="ele"/>
+    <attribute name="grid_location" value="node"/>
+  </variable>
+
+  <variable name="salt">
+    <attribute name="coordinates" value="time sigma lat lon"/>
+    <attribute name="grid" value="ele"/>
+    <attribute name="grid_location" value="node"/>
+  </variable>
+
+
+  <attribute name="Conventions" value="CF-1.0"/>
+
+</netcdf>

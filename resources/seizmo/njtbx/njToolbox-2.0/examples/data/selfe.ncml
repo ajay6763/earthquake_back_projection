@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+<aggregation type="union">
+<netcdf location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/~cseaton/selfe_hgrid.nc" />
+<netcdf location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/~cseaton/selfe_elev.nc" />
+<netcdf location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/~cseaton/selfe_salt.nc" />
+</aggregation>
+<variable name="zeta" orgName="elev">
+        <attribute name="coordinates" value="time lat lon"/>
+        <attribute name="grid" value="ele"/>
+        <attribute name="units" value="meters" />
+    </variable>
+    <variable name="ele">
+        <attribute name="index_origin" type="short" value="1"/>
+        <attribute name="cell_type" value = "tri_ccw" />
+        <attribute name="standard_name" value="connectivity_array" />
+        <attribute name="coordinates_node" value = "lat lon" />
+    </variable>
+    <variable name="salt">
+        <attribute name="coordinates" value="time sigma lat lon"/>
+        <attribute name="grid" value="ele"/>
+        <attribute name="units" value="0.001" />
+    </variable>
+    <variable name = "sigma">
+        <attribute name="standard_name" value = "ocean_s_coordinate" />
+        <attribute name="formula_terms" value = "s: sigma eta: zeta depth: depth a: theta_f b: theta_b depth_c: depth_c " />
+    </variable>
+    <variable name="depth_c" type="float" value="10.">
+        <attribute name="long_name" value="depth_c" />
+        <attribute name="positive" value="down" />
+        <attribute name="units" value="meters" />
+    </variable>
+    <variable name="theta_b" type="float" value="1.">
+        <attribute name="long_name" value="Theta_b" />
+        <attribute name="units" value="non-dimensional" />
+    </variable>
+    <variable name="theta_f" type="float" value="5.">
+        <attribute name="long_name" value="Theta_f" />
+        <attribute name="units" value="non-dimensional" />
+    </variable>
+    <variable name="time">
+        <attribute name="units" value="seconds since 2001-05-01 00:00:00 PST"/>
+    </variable>
+    <attribute name="Conventions" value="CF-1.4"/>
+</netcdf>

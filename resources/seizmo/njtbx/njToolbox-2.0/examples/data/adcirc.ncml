@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+    <aggregation type="union">
+        <netcdf location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/nc/fort.63.nc"/>
+        <netcdf location="http://geoport.whoi.edu/thredds/dodsC/usgs/vault0/data/examples/nc/fort.64.nc"/>
+    </aggregation>
+    <variable name="ubar" orgName="u-vel">
+        <attribute name="coordinates" value="time y x"/>
+        <attribute name="grid" value="element"/>
+        <attribute name="grid_location" value="node"/>
+    </variable>
+    <variable name="vbar" orgName="v-vel">
+        <attribute name="coordinates" value="time y x"/>
+        <attribute name="grid" value="element"/>
+        <attribute name="grid_location" value="node"/>
+    </variable>
+    <variable name="zeta">
+        <attribute name="coordinates" value="time y x"/>
+        <attribute name="grid" value="element"/>
+        <attribute name="grid_location" value="node"/>
+    </variable>
+    <variable name="element" >
+        <attribute name="cell_type" value="tri_ccw"/>
+        <attribute name="index_origin" type="short" value="1"/>
+        <attribute name="coordinates_node" value="x y"/>
+     </variable>
+    <variable name="time">
+        <attribute name="units" value="seconds since 2006-06-01 00:00:00 -04:00"/>
+    </variable>
+    <attribute name="Conventions" value="CF-1.4"/>
+</netcdf>

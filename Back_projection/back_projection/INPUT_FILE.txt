@@ -1,0 +1,10 @@
+'event info'
+'id'
+'depth'
+'lat'
+'long'
+
+'#back projection info'
+'frequency band'
+'length of waveform'
+'source grid set up'

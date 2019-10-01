@@ -1,0 +1,7 @@
+# data ordering
+
+First of all whenever a big earthquake occurs we do MT5 inversion for moment tensor we order data using breaqfast. So do that and save the breakfast request file.
+
+Now what I have done here is made a list of all the stations in all arrays (AU,JP EU) and what I do is make the numbers of line the breakfast file equal to the number of stations I have in all arrays, I do it simply copy paste (you can thing of smart way to do it).
+
+Now run the  all_net_breqfast.sh script . After running this you will have a file named temp and add the your contact details on top it and email to get the data.

@@ -1,0 +1,58 @@
+#!/bin/bash
+
+
+
+
+
+#### to convert outpur from matlab in individual files and  renaming the alligned files according to there event names so to keep track of them and convert them into sac format
+## master list is in event_index
+l=272; # no of files
+l=`wc -l  event_index|awk '{print $1}'`
+seq 1 $l >t
+for i in `cat t`
+do
+#echo $i
+name=`cat event_index|awk -v var=$i 'FNR==var{print $1}'`
+echo $name
+cat v_2_stack.txt|awk -v var=$i '{print $var}'>$name'_V.txt'
+cat r_2_stack.txt|awk -v var=$i '{print $var}'>$name'_R.txt'
+cat t_2_stack.txt|awk -v var=$i '{print $var}'>$name'_T.txt'
+done
+
+
+
+## converting to sac format to insepct them visually 
+for file in *.xy
+do
+name=`echo  $file|awk -F.x '{print $1}'`
+cat $file|awk '{print $2}'>temp
+echo name
+amp2sac  temp $name'.sac' 0.05
+done
+
+## visual inspection
+for file in *??Z
+do
+#name=`echo  $file|awk -FV '{print $1}'`
+#fv=${name}'V.sac'
+#fr=${name}'R.sac'
+#ft=${name}'T.sac'
+sac<<!
+r $file
+qdp off
+ppk
+wh
+q
+!
+echo "Want to stack (y/n):"
+read ans
+if [ $ans == 'y' ]
+then
+echo "copying"
+cp ./$file ./selected
+else
+echo "Rejecting"
+fi
+done
+
+
