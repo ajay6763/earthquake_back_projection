@@ -10,7 +10,7 @@
 > ![Earthquake back-projection method](https://github.com/ajay6763/eaethquake_back_projection/blob/master/BP_EQ.jpg)
 > --
 >  ## Method
->  - Algorithem as follows:
+>  - Algorithm as follows:
 > 1. The source region, surrounding the hypocentre is parameter-ized as a horizontal plane with grids. The plane is fixed in space at the hypocentral depth.
 
 > 2. The teleseismicP-wave, from each station within the ar-ray, is windowed 30 s before and 150 s after the theoretical ar-rival time computed using the IASP91 velocity model (Kennett &Engdahl1991).
